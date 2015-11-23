@@ -8,30 +8,32 @@ value = zeros (1,16);
 Q = rand(16,4);
 E = rand(16);
 
-r = 0;
-eta = 0.05;
-gamma = 0.9;
-epsilon = 0.05;
+%Initialisation
+n = 0.1;      % Poids des recompenses avenir
+gamma = 0.9;  % Recompense prochaine steps
+
+
 s_inter  = 0;
-s = rand(16);
-a = 0;
+s = ceil(rand*16);
+
+
 for i = 1:1000
-    a = e_greedy(s,i,100,Q);
-    [s_inter, r] = go(s,a);
-    Q(s, a) = Q(s, a) +  eta*(r + gamma*max(Q(s_inter, :)) - Q(s, a));
+    a = e_greedy(s,i,1000,Q)
+    [s_inter, r] = go(s,a)
+    Q(s, a) = Q(s, a) +  n*(r + gamma*max(Q(s_inter, :)) - Q(s, a));
     s = s_inter;
 end
 
 
 
 %Initialise l'etat initiale de toto
-
 states(1) = ceil(rand*16);
+
 %Selon l'etat precedent on calcul l etat suivant
 for u = 2:10
-    a = e_greedy(Q, states(u-1), 0);
-    s_r = go(states(u-1), a);
-    states(u) = s_r(1);
+    a = e_greedy(states(u-1), u, 10,Q); % e_greedy trop fort pour ce cas à retravailler
+    s_inter = go(states(u-1), a);
+    states(u) = s_inter(1);
 end
 
 %Generation image toto
