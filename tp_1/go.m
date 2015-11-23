@@ -71,4 +71,4 @@ rew = [ 0,-1,0,-1;  % position 1 non-voulue, les actions 0 lui permettent de rev
         reward    = rew(state,action);
 
 
-endfunction
+end

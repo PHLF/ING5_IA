@@ -18,8 +18,8 @@ s = ceil(rand*16);
 
 
 for i = 1:1000
-    a = e_greedy(s,i,1000,Q)
-    [s_inter, r] = go(s,a)
+    a = e_greedy(s,i,1000,Q);
+    [s_inter, r] = go(s,a);
     Q(s, a) = Q(s, a) +  n*(r + gamma*max(Q(s_inter, :)) - Q(s, a));
     s = s_inter;
 end
