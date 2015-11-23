@@ -66,8 +66,9 @@ rew = [ 0,-1,0,-1;  % position 1 non-voulue, les actions 0 lui permettent de rev
           13,15,10,2;                 
           16,14,11,3;     
           15,13,12,4];
-          
-newstate  = trans(state,action);
-reward    = rew(state,action);
+      
+        newstate  = trans(state,action);
+        reward    = rew(state,action);
+
 
 endfunction
