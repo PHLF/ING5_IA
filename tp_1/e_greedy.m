@@ -32,8 +32,12 @@ r=rand(1);
 
 
 if(0<=r)&&(r<=epsilon)
-  action = randi(size(Q, 2)); %On choisit en fonction de l'etat actuel parmi les etats suivants possibles.
+  %Exploration: on choisit aleatoirement une action entre 1 et 4 avec une
+  %probabilite epsilon
+  action = randi(size(Q, 2));
 elseif(epsilon<r)&&(r<=1)
+  %Exploitation: on choisit l'action parmi toutes celles possible dont on 
+  %estime qu'elle rapportera la meilleure récompense.
   [dummy, action] = max(Q(state,:));
 end
 
