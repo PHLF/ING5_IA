@@ -7,11 +7,11 @@ value = zeros (1,16);
 % Q-learning
 Q = rand(16,4);
 E = rand(16);
-iter_max=10;
+iter_max=100;
 
 % Initialisation
-n = 0.5;      % Vitesse d'apprentissage: n==0 => aucun apprentissage
-gamma = 0.9;  % Influence du poids des récompenses futures.
+n = 0.9;      % Vitesse d'apprentissage: n==0 => aucun apprentissage
+gamma = 0.15;  % Influence du poids des récompenses futures.
 % L'agent chosira les récompenses les plus importantes et proches si gamma
 % est faible. Au contraire il tendra à faire des actions qui l'amène vers
 % des récompenses plus importantes à long terme.
@@ -32,12 +32,11 @@ for k = 1:iter_max
     Q(s, a) = Q(s, a) +  n*(r + gamma*max(Q(s_inter, :)) - Q(s, a));
     
     % Pour observer la convergence.
-    Q_plot(k)=abs(n*(r + gamma*max(Q(s_inter, :)) - Q(s, a)));
-    
-    s = s_inter;
-    
+    Q_plot(k)=n*(r + gamma*max(Q(s_inter, :)) - Q(s, a));    
     epsilon(k)=e;
     iter(k)=k;
+    
+    s = s_inter;
     
 end
 
