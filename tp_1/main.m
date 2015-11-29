@@ -1,8 +1,6 @@
 states = zeros(1, 10);
 policy = ones (1,16);
 value = zeros (1,16);
-#Dans le rapport il faut des réflexions, est-ce que si on apprends tout en meme
-#si on apprend séparément etc etc
 
 #Position possible quand on marche 2 3 4 5 8 9 13 14 
 rew = [ 0,-1,0,-1;  # position 1 non-voulue, les actions 0 lui permettent de revenir dans une position normale
@@ -26,8 +24,8 @@ rew = [ 0,-1,0,-1;  # position 1 non-voulue, les actions 0 lui permettent de rev
         -1,0,-1,0]; # CF position 1
 
         
-# On tente a 0.5 
-g = 0.001;
+# Facteur d'actualisation
+g = 0.5;
 
 trans = [ 2,4,5,13;
           1,3,6,14;
@@ -50,28 +48,44 @@ trans = [ 2,4,5,13;
           15,13,12,4];
 
 
+iteration = 100;            %Nombre d'itération pour l'amélioration de la politique
+buf = 0;        
+RMS = zeros(1,iteration);   %Erreur entre la nouvelle estimation des récompenses futures et la précédente
+inter = zeros(1,iteration); %Axe pour le graphe
 
-#assez d'iteration
-for p = 1:100
+%assez d'iteration
+for p = 1:iteration
   for s = 1:16
     [dummy, policy(s)] = max(rew(s,:) + g * value(trans(s,:)));
   end
-  
+  last_value = value;
   for s = 1:16
     a = policy(s);
     value(s)=rew(s,a) + g * value(trans(s,a));
   end  
+  
+  buf = 0;
+  for s = 1:16
+    buf += (value(s) - last_value(s))^2;
+  end
+
+  %Calcul du critère de convergence
+  RMS(p) = (1/16)*((buf)^(1/2));
+  inter(p) = p;
 end
 
-#Initialise l'etat initiale de toto
+plot(inter,RMS,'r');
+hold on;
+
+%Initialise l'etat initiale de toto
 states(1) = ceil(rand*16);
-#states(1) = 11;
-#Selon l'etat precedent on calcul l etat suivant
+
+%Selon l'etat precedent on calcul l etat suivant
 for u = 2:10
     states(u) = trans(states(u-1),policy(states(u-1)));
 end
 
-#Generation image toto
+%Generation image toto
+figure();
 walkshow(states',"toto.png");
-
 

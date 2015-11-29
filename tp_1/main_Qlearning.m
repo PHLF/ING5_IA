@@ -32,7 +32,6 @@ for k = 1:iter_max
     epsilon(k)=e;
     iter(k)=k;
     
-    
 end
 
 plot(iter,epsilon,iter,Q_plot,'r');
