@@ -10,8 +10,11 @@ E = rand(16);
 iter_max=1000;
 
 % Initialisation
-n = 0.1;      % Poids des recompenses avenir
-gamma = 0.9;  % Recompense prochaine steps
+n = 0.1;      % Vitesse d'apprentissage: n==0 => aucun apprentissage
+gamma = 0.9;  % Influence du poids des récompenses futures.
+% L'agent chosira les récompenses les plus importantes et proches si gamma
+% est faible. Au contraire il tendra à faire des actions qui l'amène vers
+% des récompenses plus importantes à long terme.
 
 
 s_inter  = 0;
